@@ -1,13 +1,14 @@
 package jp.co.futureantiques.myweight.Database;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import jp.co.futureantiques.myweight.WeightData;
+import androidx.appcompat.app.AppCompatActivity;
 
-public class DBManager {
+public class DBManager extends AppCompatActivity {
     private DBHelper mHelper;
     private SQLiteDatabase db;
 
@@ -15,42 +16,53 @@ public class DBManager {
         mHelper = new DBHelper(context);
     }
 
-    public DBManager() {
+    //追加処理
+    //AddActivity
+    public void insert(String weight, String fat) {
+        db = mHelper.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("weight", Integer.parseInt(weight));
+        contentValues.put("fat", Integer.parseInt(fat));
+        db.insert("WEIGHT_MASTER", null, contentValues);
 
+        Log.i("Insert_Success", "Insertに成功しました。");
+        db.close();
     }
 
-    //SELECT文
-    //全選択（一覧表示）
-    public Cursor selectAll() {
-        //dbの初期化
-        db = mHelper.getWritableDatabase();
-        return db.rawQuery("SELECT id as _id, weight, fat, memo, creation_date FROM WEIGHT_MASTER", null);
-    }
-
-    /*//SELECT文
-    //条件選択
-    public WeightData select(String keyId) {
-        db = mHelper.getWritableDatabase();
-        Cursor cursor = db.rawQuery(
-                "SELECT id, weight, memo, fat, creation_data " +
-                        "FROM WEIGHT_MASTER " +
-                        "WHERE id = ?",
-                new String[]{keyId});
+    //SELECT
+    public StringBuilder selectTest(Context context) {
+        if (mHelper == null) {
+            mHelper = new DBHelper(context);
+        }
+        if (db == null) {
+            db = mHelper.getReadableDatabase();
+        }
+        Cursor cursor = db.query(
+                "WEIGHT_MASTER",
+                new String[]{"id", "weight", "fat"},
+                null,
+                null,
+                null,
+                null,
+                null
+        );
 
         //WeightDataへ格納する
         cursor.moveToFirst();
-        WeightData wData = new WeightData();
-        int weight = cursor.getInt(cursor.getColumnIndex("weight"));
-        int fat = cursor.getInt(cursor.getColumnIndex("fat"));
-        String memo = cursor.getString(cursor.getColumnIndex("memo"));
 
-        //戻り値の中のパラメータ
-        wData.setWeight(weight);
-        wData.setFat(fat);
-        wData.setMemo(memo);
-
-        //ログの出力
-        Log.i("LogSelectSuccess", "DBからSELECTに成功しました");
-        return wData;
-    }*/
+        StringBuilder sBuilder = new StringBuilder();
+        for (int i = 0; i < cursor.getCount(); i++) {
+            sBuilder.append("------------------------------\n");
+            sBuilder.append(cursor.getString(cursor.getColumnIndex("id")));
+            sBuilder.append("\n");
+            sBuilder.append(cursor.getString(cursor.getColumnIndex("weight")));
+            sBuilder.append("\n");
+            sBuilder.append(cursor.getString(cursor.getColumnIndex("fat")));
+            sBuilder.append("\n");
+            sBuilder.append("------------------------------\n");
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return sBuilder;
+    }
 }

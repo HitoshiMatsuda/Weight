@@ -1,6 +1,5 @@
 package jp.co.futureantiques.myweight.Chart;
 
-import android.database.Cursor;
 import android.graphics.Color;
 
 import com.github.mikephil.charting.data.Entry;
@@ -13,48 +12,14 @@ import java.util.ArrayList;
 import jp.co.futureantiques.myweight.Database.DBHelper;
 import jp.co.futureantiques.myweight.Database.DBManager;
 
+
 public class ChartManager {
-    private DBManager dbManager;
-    private DBHelper dbHelper;
-    private float weight;
-    private float fat;
+    private LineDataSet weights;
+    private LineDataSet fats;
 
-    public ChartManager() {
-    }
-
-    public void getFromDB(){
-        //DBより情報取得
-        dbManager = new DBManager();
-        Cursor cursor = dbManager.selectAll();
-        cursor.moveToFirst();
-
-        ArrayList<Float> wTest = new ArrayList<>();
-        while (cursor.moveToNext()) {
-            if (cursor == null) {
-                wTest.add(0f);
-            } else {
-                weight = cursor.getFloat(
-                        cursor.getColumnIndex("weight"));
-                wTest.add(weight);
-            }
-        }
-
-        ArrayList<Float> fTest = new ArrayList();
-        while (cursor.moveToNext()) {
-            if (cursor == null) {
-                fTest.add(0f);
-            } else {
-                fat = cursor.getFloat(
-                        cursor.getColumnIndex("fat"));
-                fTest.add(fat);
-            }
-        }
-    }
+    public ChartManager() {}
 
     public LineData setData() {
-
-        //getFromDB();
-
         //ラインのデータ設定等
         //表示用サンプルデータ
         float[] swData = {95, 85, 70, 75, 80, 75, 73, 69, 68, 67, 65, 64, 62};
@@ -69,8 +34,6 @@ public class ChartManager {
         for (int i = 0; i < sfData.length; i++) {
             fData.add(new Entry(i, sfData[i], null, null));
         }
-        LineDataSet weights;
-        LineDataSet fats;
 
         //体重ラインの設定
         //ラベル名
