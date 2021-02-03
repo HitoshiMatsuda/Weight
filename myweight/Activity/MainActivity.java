@@ -3,19 +3,12 @@ package jp.co.futureantiques.myweight.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.LineData;
@@ -36,13 +29,17 @@ public class MainActivity extends AbstractWeightBaseActivity {
     protected void onResume() {
         super.onResume();
         setContentView(R.layout.activity_main);
+        toolbar = findViewById(R.id.MenuBar);
+        setSupportActionBar(toolbar);
+
         mDBManager = new DBManager(MainActivity.this);
-        textView = findViewById(R.id.testText);
-        mWeight = findViewById(R.id.textWeight);
-        mFat = findViewById(R.id.textFat);
+        mWeight = findViewById(R.id.weight_Text);
+        mFat = findViewById(R.id.fat_Text);
+        //グラフ部分設計
+        chartManager = new ChartManager();
 
         //登録
-        Button registerButton = findViewById(R.id.aButton);
+        Button registerButton = findViewById(R.id.register_Button);
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,25 +54,17 @@ public class MainActivity extends AbstractWeightBaseActivity {
             }
         });
 
-
-        //読み込み
-        Button button = findViewById(R.id.rButton);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.i("SelectButton", "読込ボタンが押されました。");
-
-                //selectTestの戻り値を格納する
-                stringBuilder = mDBManager.selectTest(MainActivity.this);
-
-                //TextViewへ表示
-                textView.setText(stringBuilder.toString());
-            }
-        });
+        //削除処理
+        //更新処理
 
 
-        //グラフ部分設計
-        chartManager = new ChartManager();
+        //体重と体脂肪を取り出す
+        wBox = mDBManager.wSelect();
+        fBox = mDBManager.fSelect();
+        Log.i("wfBox_Insert", "wBox,fBoxへ取り込みました。");
+
+        //LineSetへ格納
+        lineData = chartManager.setData(wBox, fBox);
 
         //折れ線グラフを紐付けする
         mChart = findViewById(R.id.lineChartExample1);
@@ -89,17 +78,15 @@ public class MainActivity extends AbstractWeightBaseActivity {
         //グラフの説明テキスト（アプリ名など）
         mChart.getDescription().setText(getResources().getString(R.string.app_name));
 
-        //グラフをスクロール可能にする
-        mChart.canScrollHorizontally(100);
 
         //X軸の設定
         XAxis xAxis = mChart.getXAxis();
         //X軸のラベルの傾き指定
-        xAxis.setLabelRotationAngle(45);
+        xAxis.setLabelRotationAngle(45f);
         //X軸のMAX,min
         //X軸に同時に表示できるデータの数
         //10個まで同時に表示可能と設定する
-        xAxis.setAxisMaximum(10f);
+        xAxis.setAxisMaximum(60f);
         xAxis.setAxisMinimum(0f);
         //DBへ登録した年月日をX軸へ追加
         //同じ日に複数登録した場合は？
@@ -112,7 +99,7 @@ public class MainActivity extends AbstractWeightBaseActivity {
         //Y軸の設定
         YAxis yAxis = mChart.getAxisLeft();
         //Y軸のMAX,min
-        yAxis.setAxisMaximum(100f);
+        yAxis.setAxisMaximum(150f);
         yAxis.setAxisMinimum(0f);
         //Y軸を破線にする
         yAxis.enableAxisLineDashedLine(10f, 10f, 1f);
@@ -121,32 +108,39 @@ public class MainActivity extends AbstractWeightBaseActivity {
         //グラフの右側に目盛りが不要であれば"false"
         mChart.getAxisRight().setEnabled(false);
 
-        LineData lineData = chartManager.setData();
-        mChart.setData(lineData);
         mChart.animateX(1500);
+        //グラフをスクロール可能にする
+        mChart.setVisibleXRangeMaximum(10f);
+        mChart.setData(lineData);
 
         //グラフの表示
         mChart.invalidate();
-        Log.i("Chart","グラフが表示されます。");
+        Log.i("Chart", "グラフが表示されます。");
     }
 
-    //メニューオプション
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
         switch (item.getItemId()) {
-            case R.id.home_icon_button:
-                Log.i("home_icon_buttonP", "ホームiconが選択されました。");
-                Intent intent0 = new Intent(MainActivity.this, MainActivity.class);
+            case R.id.add_icon:
+                Log.i("add_icon_buttonP", "AddIconが選択されました。");
+                Intent intent0 = new Intent(MainActivity.this, SecondActivity.class);
                 startActivity(intent0);
                 return true;
-            case R.id.add_icon_button:
-                Log.i("add_icon_buttonP", "新規追加iconが選択されました。");
-                Intent intent = new Intent(MainActivity.this, SecondActivity.class);
-                startActivity(intent);
+            case R.id.dash_icon:
+                Log.i("add_icon_buttonP", "AddIconが選択されました。");
+                Intent intent1 = new Intent(MainActivity.this, ThirdActivity.class);
+                startActivity(intent1);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    //更新処理が必要
 }

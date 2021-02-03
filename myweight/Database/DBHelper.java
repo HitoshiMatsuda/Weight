@@ -28,6 +28,10 @@ public class DBHelper extends SQLiteOpenHelper {
                 + "weight INTEGER,"
                 + "fat INTEGER,"
                 + "memo TEXT,"
+                + "pectorals INTEGER,"
+                + "back INTEGER,"
+                + "lower INTEGER,"
+                + "shoulder INTEGER,"
                 + "creation_date TIMESTAMP DEFAULT (DATETIME(CURRENT_TIMESTAMP,'LOCALTIME')))"
         );
     }

@@ -1,15 +1,14 @@
 package jp.co.futureantiques.myweight.Activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
-import android.text.Html;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.LineData;
 
 import jp.co.futureantiques.myweight.Chart.ChartManager;
 import jp.co.futureantiques.myweight.Database.DBManager;
@@ -25,31 +24,32 @@ public class AbstractWeightBaseActivity extends AppCompatActivity {
     protected DBManager mDBManager;
     protected StringBuilder stringBuilder;
     protected TextView textView;
+    protected Toolbar toolbar;
+    protected int[] wBox;
+    protected int[] fBox;
+    protected LineData lineData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_abstract_weight_base);
+        toolbar = findViewById(R.id.MenuBar);
+        setSupportActionBar(toolbar);
+
+        //AppBarConfiguration
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        textView = findViewById(R.id.DBView);
+        mWeight = findViewById(R.id.weight_Text);
+        mFat = findViewById(R.id.fat_Text);
         //グラフ説明の文字色指定
         //mChart.getDescription().setTextColor(android.R.color.black);
         //グラフ説明の文字サイズ指定
         //mChart.getDescription().setTextSize(10f);
         //グラフ説明の配置指定
         //mChart.getDescription().setPosition(0,0);
-    }
-
-    //ツールバーデザイン
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main_menu, menu);
-        //タイトルの文字色指定
-        getSupportActionBar().setTitle(Html.fromHtml("<font color = black>" + getString(R.string.app_name) + "</font>"));
-        return true;
     }
 }

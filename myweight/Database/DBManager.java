@@ -8,9 +8,14 @@ import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class DBManager extends AppCompatActivity {
+import java.util.List;
+
+public class DBManager {
     private DBHelper mHelper;
     private SQLiteDatabase db;
+    protected int wBox[];
+    protected int fBox[];
+    protected int num;
 
     public DBManager(Context context) {
         mHelper = new DBHelper(context);
@@ -29,8 +34,64 @@ public class DBManager extends AppCompatActivity {
         db.close();
     }
 
-    //SELECT
-    public StringBuilder selectTest(Context context) {
+    //MainActivity.Chart(Weight)
+    public int[] wSelect() {
+        if (db == null) {
+            db = mHelper.getReadableDatabase();
+        }
+        Cursor cursor = db.query(
+                "WEIGHT_MASTER",
+                new String[]{"id", "weight"},
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+        //WeightDataへ格納する
+        cursor.moveToFirst();
+        //カラムの数を取得する
+        num = cursor.getCount();
+        wBox = new int[num];
+        //ループでwBox(体重データ)へ格納する
+        for (int i = 0; i < num; i++) {
+            wBox[i] = Integer.parseInt(cursor.getString(cursor.getColumnIndex("weight")));
+            cursor.moveToNext();
+        }
+        Log.i("xBpx_Insert","xBoxへ格納しました。");
+        return wBox;
+    }
+
+    //MainActivity.Chart(Fat)
+    public int[] fSelect() {
+        if (db == null) {
+            db = mHelper.getReadableDatabase();
+        }
+        Cursor cursor = db.query(
+                "WEIGHT_MASTER",
+                new String[]{"id", "fat"},
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+        //WeightDataへ格納する
+        cursor.moveToFirst();
+        //カラムの数を取得する
+        num = cursor.getCount();
+        fBox = new int[num];
+        //ループでwBox(体重データ)へ格納する
+        for (int i = 0; i < num; i++) {
+            fBox[i] = Integer.parseInt(cursor.getString(cursor.getColumnIndex("fat")));
+            cursor.moveToNext();
+        }
+        Log.i("fBpx_Insert","fBoxへ格納しました。");
+        return fBox;
+    }
+
+    //SecondActivity.TextView
+    public StringBuilder reRode(Context context) {
         if (mHelper == null) {
             mHelper = new DBHelper(context);
         }
@@ -65,4 +126,5 @@ public class DBManager extends AppCompatActivity {
         cursor.close();
         return sBuilder;
     }
+
 }

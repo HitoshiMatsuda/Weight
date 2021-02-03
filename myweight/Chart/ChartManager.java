@@ -1,5 +1,6 @@
 package jp.co.futureantiques.myweight.Chart;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 
 import com.github.mikephil.charting.data.Entry;
@@ -9,6 +10,7 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.util.ArrayList;
 
+import jp.co.futureantiques.myweight.Activity.MainActivity;
 import jp.co.futureantiques.myweight.Database.DBHelper;
 import jp.co.futureantiques.myweight.Database.DBManager;
 
@@ -19,20 +21,21 @@ public class ChartManager {
 
     public ChartManager() {}
 
-    public LineData setData() {
+    public LineData setData(int wBox[], int fBox[]) {
         //ラインのデータ設定等
-        //表示用サンプルデータ
-        float[] swData = {95, 85, 70, 75, 80, 75, 73, 69, 68, 67, 65, 64, 62};
-        float[] sfData = {20, 17, 15, 14, 15, 11, 10, 10, 9, 9, 7, 7, 6};
+        //表示データ
+        int[] swBox = wBox;
+        int[] sfBox = fBox;
+
         //体重用リスト
         ArrayList<Entry> wData = new ArrayList<>();
-        for (int i = 0; i < swData.length; i++) {
-            wData.add(new Entry(i, swData[i], null, null));
+        for (int i = 0; i < swBox.length; i++) {
+            wData.add(new Entry(i, wBox[i], null, null));
         }
         //体脂肪用リスト
         ArrayList<Entry> fData = new ArrayList<>();
-        for (int i = 0; i < sfData.length; i++) {
-            fData.add(new Entry(i, sfData[i], null, null));
+        for (int i = 0; i < sfBox.length; i++) {
+            fData.add(new Entry(i, fBox[i], null, null));
         }
 
         //体重ラインの設定
@@ -43,9 +46,9 @@ public class ChartManager {
         //座標の色
         weights.setCircleColor(Color.WHITE);
         //座標の大きさ
-        weights.setCircleRadius(3f);
+        weights.setCircleRadius(3);
         //線の太さ
-        weights.setLineWidth(5f);
+        weights.setLineWidth(5);
         //線の下を塗りつぶすか
         weights.setDrawFilled(true);
         //塗り潰したフィールドの色
@@ -59,8 +62,8 @@ public class ChartManager {
         //座標の色
         fats.setCircleColor(Color.WHITE);
         //座標の大きさ
-        fats.setCircleRadius(3f);
-        fats.setLineWidth(5f);
+        fats.setCircleRadius(3);
+        fats.setLineWidth(5);
         fats.setDrawFilled(true);
         fats.setFillColor(Color.BLUE);
 
