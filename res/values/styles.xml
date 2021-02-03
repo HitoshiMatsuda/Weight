@@ -1,7 +1,8 @@
 <resources>
 
-    <style name="Widget.Theme.MyWeight.MyView" parent="">
+    <style name="Custom_Design" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:background">@color/gray_400</item>
         <item name="exampleColor">@color/light_blue_400</item>
+        <item name="colorPrimaryDark">@color/light_blue_600</item>
     </style>
 </resources>
