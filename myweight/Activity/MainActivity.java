@@ -11,7 +11,6 @@ import android.widget.Button;
 
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.LineData;
 
 import jp.co.futureantiques.myweight.Chart.ChartManager;
 import jp.co.futureantiques.myweight.Database.DBManager;
@@ -19,6 +18,7 @@ import jp.co.futureantiques.myweight.R;
 
 
 public class MainActivity extends AbstractWeightBaseActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,12 +31,22 @@ public class MainActivity extends AbstractWeightBaseActivity {
         setContentView(R.layout.activity_main);
         toolbar = findViewById(R.id.MenuBar);
         setSupportActionBar(toolbar);
-
+        homeButton = findViewById(R.id.home);
         mDBManager = new DBManager(MainActivity.this);
+        mId = findViewById(R.id.id_Text);
         mWeight = findViewById(R.id.weight_Text);
         mFat = findViewById(R.id.fat_Text);
         //グラフ部分設計
         chartManager = new ChartManager();
+
+        //ホームボタン
+        homeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
 
         //登録
         Button registerButton = findViewById(R.id.register_Button);
@@ -54,9 +64,19 @@ public class MainActivity extends AbstractWeightBaseActivity {
             }
         });
 
-        //削除処理
         //更新処理
+        Button upDataButton = findViewById(R.id.read_Button);
+        upDataButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDBManager = new DBManager(MainActivity.this);
 
+                iId = Integer.parseInt(mId.getText().toString());
+                iWeight = Integer.parseInt(mWeight.getText().toString());
+                iFat = Integer.parseInt(mFat.getText().toString());
+                mDBManager.UpData(iId, iWeight, iFat);
+            }
+        });
 
         //体重と体脂肪を取り出す
         wBox = mDBManager.wSelect();
@@ -92,17 +112,17 @@ public class MainActivity extends AbstractWeightBaseActivity {
         //同じ日に複数登録した場合は？
         //xAxis.setValueFormatter(new IndexAxisValueFormatter(getDate()));
         //X軸を破線にする
-        xAxis.enableAxisLineDashedLine(10f, 10f, 1f);
+        xAxis.enableAxisLineDashedLine(5f, 5f, 1f);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
 
 
         //Y軸の設定
         YAxis yAxis = mChart.getAxisLeft();
         //Y軸のMAX,min
-        yAxis.setAxisMaximum(150f);
+        yAxis.setAxisMaximum(120f);
         yAxis.setAxisMinimum(0f);
         //Y軸を破線にする
-        yAxis.enableAxisLineDashedLine(10f, 10f, 1f);
+        yAxis.enableAxisLineDashedLine(5f, 5f, 1f);
         yAxis.setDrawZeroLine(true);
 
         //グラフの右側に目盛りが不要であれば"false"
@@ -141,6 +161,4 @@ public class MainActivity extends AbstractWeightBaseActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-
-    //更新処理が必要
 }

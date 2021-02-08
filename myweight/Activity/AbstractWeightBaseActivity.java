@@ -1,6 +1,7 @@
 package jp.co.futureantiques.myweight.Activity;
 
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -21,6 +22,10 @@ public class AbstractWeightBaseActivity extends AppCompatActivity {
     protected EditText mFat;
     protected String weight;
     protected String fat;
+    protected EditText mId;
+    protected int iId;
+    protected int iWeight;
+    protected int iFat;
     protected DBManager mDBManager;
     protected StringBuilder stringBuilder;
     protected TextView textView;
@@ -28,6 +33,7 @@ public class AbstractWeightBaseActivity extends AppCompatActivity {
     protected int[] wBox;
     protected int[] fBox;
     protected LineData lineData;
+    protected Button homeButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +41,6 @@ public class AbstractWeightBaseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_abstract_weight_base);
         toolbar = findViewById(R.id.MenuBar);
         setSupportActionBar(toolbar);
-
-        //AppBarConfiguration
     }
 
     @Override

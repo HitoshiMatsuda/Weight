@@ -32,7 +32,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 + "back INTEGER,"
                 + "lower INTEGER,"
                 + "shoulder INTEGER,"
-                + "creation_date TIMESTAMP DEFAULT (DATETIME(CURRENT_TIMESTAMP,'LOCALTIME')))"
+                + "creation_date TIMESTAMP DEFAULT (DATETIME(CURRENT_TIMESTAMP,'LOCALTIME')),"
+                + "dflag INTEGER DEFAULT 0)"
         );
     }
 

@@ -58,7 +58,7 @@ public class DBManager {
             wBox[i] = Integer.parseInt(cursor.getString(cursor.getColumnIndex("weight")));
             cursor.moveToNext();
         }
-        Log.i("xBpx_Insert","xBoxへ格納しました。");
+        Log.i("xBpx_Insert", "xBoxへ格納しました。");
         return wBox;
     }
 
@@ -86,7 +86,7 @@ public class DBManager {
             fBox[i] = Integer.parseInt(cursor.getString(cursor.getColumnIndex("fat")));
             cursor.moveToNext();
         }
-        Log.i("fBpx_Insert","fBoxへ格納しました。");
+        Log.i("fBpx_Insert", "fBoxへ格納しました。");
         return fBox;
     }
 
@@ -127,4 +127,23 @@ public class DBManager {
         return sBuilder;
     }
 
+    //更新処理
+    public void UpData(int id, int weight, int fat) {
+        db = mHelper.getWritableDatabase();
+        int keyId = id + 1;
+        String Id = String.valueOf(keyId);
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("id", Id);
+        contentValues.put("weight", weight);
+        contentValues.put("fat", fat);
+        db.update("WEIGHT_MASTER"
+                , contentValues
+                , "id = ?"
+                , new String[]{Id}
+        );
+        db.close();
+    }
+
+    //削除処理
 }
+

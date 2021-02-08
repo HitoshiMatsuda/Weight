@@ -46,13 +46,13 @@ public class ChartManager {
         //座標の色
         weights.setCircleColor(Color.WHITE);
         //座標の大きさ
-        weights.setCircleRadius(3);
+        weights.setCircleRadius(3f);
         //線の太さ
-        weights.setLineWidth(5);
+        weights.setLineWidth(5f);
         //線の下を塗りつぶすか
-        weights.setDrawFilled(true);
+        weights.setDrawFilled(false);
         //塗り潰したフィールドの色
-        weights.setFillColor(Color.RED);
+        //weights.setFillColor(Color.RED);
 
         //体脂肪ラインの設定
         //ラベル名
@@ -62,10 +62,10 @@ public class ChartManager {
         //座標の色
         fats.setCircleColor(Color.WHITE);
         //座標の大きさ
-        fats.setCircleRadius(3);
-        fats.setLineWidth(5);
-        fats.setDrawFilled(true);
-        fats.setFillColor(Color.BLUE);
+        fats.setCircleRadius(3f);
+        fats.setLineWidth(5f);
+        fats.setDrawFilled(false);
+        //fats.setFillColor(Color.BLUE);
 
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
         dataSets.add(weights);
