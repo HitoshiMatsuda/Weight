@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">MyWeight</string>
+    <string name="Register">登録</string>
+    <string name="ReRoad">更新</string>
+    <string name="Delete">削除</string>
+    <string name="Result">検索結果</string>
+    <string name="Weight">体重</string>
+    <string name="Fat">体脂肪率</string>
+    <string name="DashBoard">ダッシュボード</string>
+    <string name="Home">ホーム画面</string>
+    <string name="drawer_open">開く</string>
+    <string name="drawer_close">閉じる</string>
+    <string name="menu1">メニュー１</string>
+    <string name="menu2">メニュー2</string>
+    <string name="menu3">メニュー3</string>
+    <string name="menu_home">Home</string>
+</resources>

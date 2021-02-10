@@ -1,0 +1,9 @@
+<resources>
+
+    <style name="Custom_Design" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:background">@color/gray_400</item>
+        <item name="exampleColor">@color/light_blue_400</item>
+        <item name="colorPrimaryDark">@color/light_blue_600</item>
+        <item name="android:icon">@drawable/ic_baseline_accessibility_24</item>
+    </style>
+</resources>
